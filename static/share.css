@@ -4,6 +4,7 @@ body {
       
 #exitButton {
   background-color: white;
+  background-size: cover;
 }
     
 .mainText {
