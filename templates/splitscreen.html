@@ -8,10 +8,13 @@
 <link href="../static/splitscreen.css" rel="stylesheet">
 <link href="../static/page_top.css" rel="stylesheet">
 
-
+<!-- jQuery -->
 <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/start/jquery-ui.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<!-- js file -->
+<script type="text/javascript" src="splitscreen.js" ></script>
 
 <script>
 (function(s,u,r,f,l,y){s[f]=s[f]||{init:function(){s[f].q=arguments}};
@@ -23,8 +26,8 @@ l.src='https://surfly.com/surfly.js';y.parentNode.insertBefore(l,y);})
 <script>
 var sess;
 var inviteLink;
-var testLink;
 var lastUrl;
+
 var settings = {widgetkey:'b84defc4621441ecae5eb10bdec1cb5a', block_until_agent_joins: false, ui_off: true, set_to_smallest: false};
 window.addEventListener('DOMContentLoaded', function() {
   Surfly.init(settings, function(init) {
@@ -64,13 +67,9 @@ window.addEventListener('DOMContentLoaded', function() {
 			// update feed
 			update_feed("Someone joined your session!");
 			// make menu elements visible
-			document.getElementById('feed').style.visibility = "visible";
-			document.getElementById('ignore').style.visibility = "visible";
-			document.getElementById('badReaction').style.visibility = "visible";
-			document.getElementById('goodReaction').style.visibility = "visible";
-			document.getElementById('exit_button').style.visibility="visible";
+			document.getElementById('menu_right').style.visibility = "visible";
 			
-			// send current link to other side
+			// send current link to other side so that the session start on this page
 			if(lastUrl){
 				setTimeout(function(){
 					var frame = document.getElementById('ifrm1').contentWindow;
@@ -85,21 +84,9 @@ window.addEventListener('DOMContentLoaded', function() {
      }
    });
  });
+</script>
 
-// navigate to a new url
-function navigate(){
-	var url = document.getElementById('url').value;
-	console.log(url);
-	if(url=="" && document.getElementById('url').placeholder){
-		console.log('ok');
-		url = document.getElementById('url').placeholder;
-	}
-	if(url.indexOf('https')==-1){
-		url = 'https://' + url;
-	}
-	sess.relocate(url);
-}
-
+<script>
 // event listener
 window.addEventListener('message', function(e){
      var origin = event.origin || event.originalEvent.origin;
@@ -117,19 +104,18 @@ window.addEventListener('message', function(e){
 			document.getElementById('ifrm2').src = flink;
 		}
 	
-		// update feed for the follower relocated
+		// update placeholder when follower relocates
 		if(string.indexOf("The follower relocated")!==-1){
 			var index = string.indexOf('data');
 			var indexEnd = string.indexOf('origin');	
 			var info = string.substring(index+9, indexEnd-5);
 			if(info.charAt(0)==='T'){
 				var new_ph = info.substring(info.indexOf('https')+8);
-				//if(new_ph.indexOf('/')!==-1){ new_ph = new_ph.substring(0, new_ph.indexOf('/'));}
 				document.getElementById('url').placeholder = new_ph;
 			}
 		}
 
-		// update feed if the follower ignores you
+		// update feed if the follower ignores/stops ignoring you
 		if(string.indexOf("Your friend is ignoring you!")!==-1||string.indexOf("Your friend stopped ignoring you!")!==-1){
 			var index = string.indexOf('data');
 			var indexEnd = string.indexOf('origin');	
@@ -138,62 +124,56 @@ window.addEventListener('message', function(e){
                         	update_feed(info);
 			}
 		}
-			var reactionFrame = document.getElementById('reaction');
-		    // if the data recieved is "good" set the source of reactionFrame to the happy image
-		    if (string.match(/(good)/)) {
-		        reactionFrame.src = "../static/happycow.jpg";
-			update_feed("You received a like!");
+		
+		// reactions
+		var reactionFrame = document.getElementById('reaction');	
+		if (string.match(/(good)/)||string.match(/(bad)/)) {
+			// if the data recieved is "good" set the source of reactionFrame to the happy image
+			if (string.match(/(good)/){
+		        	reactionFrame.src = "../static/happycow.jpg";
+				update_feed("You received a like!");
+			// if the data recieved is "bad" the src of reactionFrame is the grumpy image
+			} else {
+				reactionFrame.src = "../static/grumpy.jpg";
+				update_feed("You received a dislike!");
+			}
                         reactionFrame.style.visibility="visible";
 		        // the frame is hidden after 3 seconds 
-		        setTimeout(function() {
-		         reactionFrame.style.visibility = "hidden";
-		        }, 3000);
-		       }
-		     // if the data recieved is "bad" the src of reactionFrame is the grumpy image
-		     if (string.match(/(bad)/)) {
-		        reactionFrame.src = "../static/grumpy.jpg";
-			update_feed("You received a dislike!");
-                        reactionFrame.style.visibility="visible";
-		        // the frame is hidden after 3 seconds 
-		          setTimeout(function() {
-		           reactionFrame.style.visibility = "hidden";
-		          }, 3000);
-		        }
+		        setTimeout(function() {reactionFrame.style.visibility = "hidden";}, 3000);
+		}
     	}
      }
 })
 
 function exitSession(){
-  sess.end('https://agile-badlands-71200.herokuapp.com');
+  sess.end('');
 }
 
 // ignore/acknowledge friend button
 function ignoreFriend() {
-    var friendsFrame = document.getElementById("ifrm2");
-    var yourFrame = document.getElementById("ifrm1");
-    var ignoreButton = document.getElementById("ignore");
+    	var friendsFrame = document.getElementById("ifrm2");
+    	var yourFrame = document.getElementById("ifrm1");
+    	var ignoreButton = document.getElementById("ignore");
 
-    if(ignoreButton.innerHTML=="Ignore Friend"){
-	// we hide our friend's iframe
-	friendsFrame.style.visibility = "hidden";
-	// we make our iframe the size of the screen
-	yourFrame.style.width = "99%";
-	// change button to acknowledge friend
-    	ignoreButton.innerHTML = "Acknowledge Friend";
-
- 	// update feed
-	friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend is ignoring you!"}), '*');
-    } else {
-	// we show our friend's iframe
-	friendsFrame.style.visibility = "visible";
-    	// we shrink our frame
-    	yourFrame.style.width = "49%";
-    	// we change the button to ignore friend 
-    	ignoreButton.innerHTML = "Ignore Friend";
-
-	// update feed 
-	friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend stopped ignoring you!"}), '*');
-    }
+    	if(ignoreButton.innerHTML=="Ignore Friend"){
+		// we hide our friend's iframe
+		friendsFrame.style.visibility = "hidden";
+		// we make our iframe the size of the screen
+		yourFrame.style.width = "99%";
+		// change button to acknowledge friend
+    		ignoreButton.innerHTML = "Acknowledge Friend";
+		// send message to update feed on the other side
+		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend is ignoring you!"}), '*');
+   	 } else {
+		// we show our friend's iframe
+		friendsFrame.style.visibility = "visible";
+    		// we shrink our frame
+    		yourFrame.style.width = "49%";
+    		// we change the button to ignore friend 
+    		ignoreButton.innerHTML = "Ignore Friend";
+		// send message to update feed on the other side
+		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend stopped ignoring you!"}), '*');
+    	}
 }
 
 //update live feed
@@ -202,15 +182,15 @@ function update_feed(text){
 	news.innerHTML = text;
 }
 
+// send a positive message to iframe1 
 function goodReaction(){
-  // send a positive message to iframe1 
   frame2 = document.getElementById("ifrm1").contentWindow;
   frame2.postMessage(JSON.stringify({"command": "message", "data": "good"}), '*');
   update_feed("You sent positive vibes!");
 }
 
+// send a negative message to iframe1
 function badReaction() {
-  // send a negative message to iframe1
   frame  = document.getElementById("ifrm1").contentWindow;
   frame.postMessage(JSON.stringify({"command": "message", "data": "bad"}), '*');
   update_feed("You sent negative vibes!");
@@ -218,34 +198,18 @@ function badReaction() {
 
 </script>
 
-<script>
-/*
-function resizeIFrameToFitContent( iFrame ) {
-
-    iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
-    iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
-}
-
-window.addEventListener('DOMContentReady', function(e) {
-
-    var iFrame = document.getElementById( 'reaction' );
-    resizeIFrameToFitContent( iFrame );
-
-    }
-} );
-*/
-</script>
-
 </head>
 
 <body>
 <div id="menu">
-	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
-	<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
-	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
-        <button id="badReaction" class="reaction" onclick="badReaction()"></button>
-	<div id="feed">
-		<p id="news_feed"></p>
+	<div id="menu_right">
+		<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
+		<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
+		<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
+		<button id="badReaction" class="reaction" onclick="badReaction()"></button>
+		<div id="feed">
+			<p id="news_feed"></p>
+		</div>
 	</div>
 	<div id="form_wrapper">
 		<form id="nav" action="" method="post">

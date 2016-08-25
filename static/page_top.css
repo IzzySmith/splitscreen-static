@@ -4,7 +4,7 @@ body {
 
 #exit_button {
 	position: relative;
-	visibility:hidden; 
+	/*visibility:hidden;*/
 	float: right;
 	background-color: #ea2020;
 	border: 2px solid black;
@@ -90,10 +90,14 @@ body {
 	height: 45px;
 }
 
+#menu {
+	visibility: hidden;
+}
+
 #ignore {
 	position: relative;
 	float: right;
-	visibility: hidden;
+	/*visibility:hidden;*/
 	background-color: #ea2020;
 	border: 2px solid black;
 	color: black;
@@ -115,7 +119,7 @@ body {
 #invite {
 	position: relative;
 	float: right;
-	visibility: hidden;
+	/*visibility:hidden;*/
 	background-color: #ea2020;
 	border: 2px solid black;
 	color: black;
@@ -142,13 +146,13 @@ body {
 	width: 50%;
 	position: fixed;
 	left: 25%;
-	visibility: hidden;
+	/*visibility:hidden;*/
 	max-height: 30px;
 }
 
 #badReaction {
        position: relative;
-       visibility: hidden;
+	/*visibility:hidden;*/
        float: right;
        margin-top: 5px;
        margin-right: 5px;
@@ -162,7 +166,7 @@ body {
 
 #goodReaction {
        position: relative;
-       visibility: hidden;
+	/*visibility:hidden;*/
        float: right;
        margin-top: 5px;
        margin-right: 5px;
@@ -174,6 +178,7 @@ body {
        background-size:cover;     
 }
 
+/*
 #popupLink {
 	top: 30%; 
 	left: 35%; 
@@ -181,6 +186,7 @@ body {
 	position: absolute; 
 	visibility:hidden
 }
+*/
 
 #reaction {
 	display: block; 
