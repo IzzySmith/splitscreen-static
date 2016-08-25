@@ -129,7 +129,7 @@ window.addEventListener('message', function(e){
 		var reactionFrame = document.getElementById('reaction');	
 		if (string.match(/(good)/)||string.match(/(bad)/)) {
 			// if the data recieved is "good" set the source of reactionFrame to the happy image
-			if (string.match(/(good)/){
+			if (string.match(/(good)/)){
 		        	reactionFrame.src = "../static/happycow.jpg";
 				update_feed("You received a like!");
 			// if the data recieved is "bad" the src of reactionFrame is the grumpy image
