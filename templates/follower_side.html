@@ -40,6 +40,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			frame.postMessage(JSON.stringify({"command": "message", "data": retrievedLink}), '*');
 			// make menu elements visible
 			document.getElementById('menu').style.visibility = "visible";
+			console.log('ok');
 			// store session
 			sess = session;
 	     	})
@@ -188,7 +189,7 @@ function badReaction() {
 </head>
 
 <body>
-<div id="menu">
+<div id="menu" style="visibility: visible;">
 	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
 	<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
 	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
