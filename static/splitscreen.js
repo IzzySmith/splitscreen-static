@@ -1,15 +1,18 @@
 // navigate to a new url
 function navigate(){
 	var url = document.getElementById('url').value;
+	// if url is empty and there is a placeholder, use placeholder instead
 	if(url=="" && document.getElementById('url').placeholder){
 		url = document.getElementById('url').placeholder;
 	}
+	// add 'https' to the link if it's not already there
 	if(url.indexOf('https')==-1){
 		url = 'https://' + url;
 	}
 	sess.relocate(url);
 }
 
+// exit session function
 function exitSession(){
   sess.end('');
 }
@@ -79,7 +82,7 @@ window.addEventListener('message', function(e){
 		}
 	
 		// update placeholder when follower relocates
-		if(string.indexOf("The follower relocated")!==-1){
+		if(string.indexOf("The follower relocated")!==-1||string.indexOf("The leader relocated")!==-1){
 			var index = string.indexOf('data');
 			var indexEnd = string.indexOf('origin');	
 			var info = string.substring(index+9, indexEnd-5);
@@ -89,13 +92,24 @@ window.addEventListener('message', function(e){
 			}
 		}
 
-		// update feed if the follower ignores/stops ignoring you
+		// update feed if your friend ignores/stops ignoring you
 		if(string.indexOf("Your friend is ignoring you!")!==-1||string.indexOf("Your friend stopped ignoring you!")!==-1){
 			var index = string.indexOf('data');
 			var indexEnd = string.indexOf('origin');	
 			var info = string.substring(index+9, indexEnd-5);
                         if(info.indexOf('!')!==-1){
                         	update_feed(info);
+			}
+		}
+		
+		// get current url (received from leader side)
+		if(string.indexOf('cobro_event') && (string.indexOf("Current url")!==-1)){
+			var index = string.indexOf('data');
+			var indexEnd = string.indexOf('origin');	
+			var info = string.substring(index+9, indexEnd-5);
+			if(info.charAt(0)==='C'){
+				var url = info.substring(info.indexOf('https'));
+                       	 	sess.relocate(url);
 			}
 		}
 		

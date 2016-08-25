@@ -49,10 +49,8 @@ window.addEventListener('DOMContentLoaded', function() {
 		        popupWindow.postMessage(inviteLink, "*");
                         // change the url of the window to display the follower link 
                         window.history.pushState('followerUrl',"", inviteLink);
-                       
-			// make the nav bar visible
+                       // make the nav bar visible
 			document.getElementById('form_wrapper').style.visibility = "visible";
-
 			// store session
 			sess = session;	
 		})
@@ -68,7 +66,6 @@ window.addEventListener('DOMContentLoaded', function() {
 			update_feed("Someone joined your session!");
 			// make menu elements visible
 			document.getElementById('menu_right').style.visibility = "visible";
-			
 			// send current link to other side so that the session start on this page
 			if(lastUrl){
 				setTimeout(function(){
@@ -122,6 +119,7 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- the reaction is seen in this iframe -->
 <div class="box"><iframe align='left' id="reaction" src="" height="300" width="200"></iframe></div>
 
+<!-- define form behaviour -->
 <script type="text/javascript" src="../static/form.js" ></script>
 
 </body>

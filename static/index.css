@@ -24,4 +24,6 @@ hr{
 
 header .header-content .header-content-inner p {
   font-weight: bold;
+  color: white; 
+  font-size: 34px;
 }
