@@ -67,7 +67,7 @@ header {
   width: 100%;
   min-height: auto;
   background-position: center;
-  background-image: url("./mountain-bike-gory-priroda.jpg");
+  /*background-image: url("./mountain-bike-gory-priroda.jpg");*/
   text-align: center;
   color: white;
 }
