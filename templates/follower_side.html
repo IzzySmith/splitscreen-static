@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Follower side</title>
 
-<link href="../static/page_top.css" rel="stylesheet">
 <link href="../static/follower_side.css" rel="stylesheet">
+<link href="../static/page_top.css" rel="stylesheet">
 
 <!-- jQuery -->
 <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/start/jquery-ui.css" rel="stylesheet" />
@@ -36,10 +36,10 @@ window.addEventListener('DOMContentLoaded', function() {
                         // get the follower link
 			var retrievedLink = session.followerLink;
 			var frame = document.getElementById('ifrm2').contentWindow;
-			// we send the link to the first frame (where a Surfly session is already started)
+			// send link to first frame
 			frame.postMessage(JSON.stringify({"command": "message", "data": retrievedLink}), '*');
 			// make menu elements visible
-			document.getElementById('menu_right').style.visibility = "visible";
+			document.getElementById('menu').style.visibility = "visible";
 			// store session
 			sess = session;
 	     	})
@@ -188,17 +188,15 @@ function badReaction() {
 </head>
 
 <body>
-<div id="menu">
-	<div id="menu_right">
-		<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
-		<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
-		<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
-		<button id="badReaction" class="reaction" onclick="badReaction()"></button>
-		<div id="feed">
-			<p id="news_feed"></p>
-		</div>
+<div id="menu" style="visibility: hidden">
+	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
+	<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
+	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
+	<button id="badReaction" class="reaction" onclick="badReaction()"></button>
+	<div id="feed">
+		<p id="news_feed"></p>
 	</div>
-	<div id="form_wrapper" style="">
+	<div id="form_wrapper">
 		<form id="nav" action="" method="post">
 			<label style="float:left">
 				<input id="url" type="text" name="url" placeholder="duckduckgo.com"/>
@@ -223,7 +221,6 @@ function badReaction() {
 pageUrl  = document.location.href;
 var idIndex = pageUrl.indexOf(".com");
 var sessionID = pageUrl.substring(idIndex+4);
-console.log("the session id is ", sessionID);
 var fullUrl =  "https://surfly.com".concat(sessionID);
 // set the url of the first frame to the follower link
 document.getElementById('ifrm2').src = fullUrl;
