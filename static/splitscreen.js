@@ -10,6 +10,57 @@ function navigate(){
 	sess.relocate(url);
 }
 
+function exitSession(){
+  sess.end('');
+}
+
+//update live feed
+function update_feed(text){
+	var news = document.getElementById("news_feed");
+	news.innerHTML = text;
+}
+
+// send a positive message to iframe1 
+function goodReaction(){
+  frame2 = document.getElementById("ifrm1").contentWindow;
+  frame2.postMessage(JSON.stringify({"command": "message", "data": "good"}), '*');
+  update_feed("You sent positive vibes!");
+}
+
+// send a negative message to iframe1
+function badReaction() {
+  frame  = document.getElementById("ifrm1").contentWindow;
+  frame.postMessage(JSON.stringify({"command": "message", "data": "bad"}), '*');
+  update_feed("You sent negative vibes!");
+}
+
+// ignore/acknowledge friend button
+function ignoreFriend() {
+    	var friendsFrame = document.getElementById("ifrm2");
+    	var yourFrame = document.getElementById("ifrm1");
+    	var ignoreButton = document.getElementById("ignore");
+
+    	if(ignoreButton.innerHTML=="Ignore Friend"){
+		// we hide our friend's iframe
+		friendsFrame.style.visibility = "hidden";
+		// we make our iframe the size of the screen
+		yourFrame.style.width = "99%";
+		// change button to acknowledge friend
+    		ignoreButton.innerHTML = "Acknowledge Friend";
+		// send message to update feed on the other side
+		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend is ignoring you!"}), '*');
+   	 } else {
+		// we show our friend's iframe
+		friendsFrame.style.visibility = "visible";
+    		// we shrink our frame
+    		yourFrame.style.width = "49%";
+    		// we change the button to ignore friend 
+    		ignoreButton.innerHTML = "Ignore Friend";
+		// send message to update feed on the other side
+		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend stopped ignoring you!"}), '*');
+    	}
+}
+
 // event listener
 window.addEventListener('message', function(e){
      var origin = event.origin || event.originalEvent.origin;
@@ -67,55 +118,4 @@ window.addEventListener('message', function(e){
     	}
      }
 })
-
-function exitSession(){
-  sess.end('');
-}
-
-// ignore/acknowledge friend button
-function ignoreFriend() {
-    	var friendsFrame = document.getElementById("ifrm2");
-    	var yourFrame = document.getElementById("ifrm1");
-    	var ignoreButton = document.getElementById("ignore");
-
-    	if(ignoreButton.innerHTML=="Ignore Friend"){
-		// we hide our friend's iframe
-		friendsFrame.style.visibility = "hidden";
-		// we make our iframe the size of the screen
-		yourFrame.style.width = "99%";
-		// change button to acknowledge friend
-    		ignoreButton.innerHTML = "Acknowledge Friend";
-		// send message to update feed on the other side
-		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend is ignoring you!"}), '*');
-   	 } else {
-		// we show our friend's iframe
-		friendsFrame.style.visibility = "visible";
-    		// we shrink our frame
-    		yourFrame.style.width = "49%";
-    		// we change the button to ignore friend 
-    		ignoreButton.innerHTML = "Ignore Friend";
-		// send message to update feed on the other side
-		friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend stopped ignoring you!"}), '*');
-    	}
-}
-
-//update live feed
-function update_feed(text){
-	var news = document.getElementById("news_feed");
-	news.innerHTML = text;
-}
-
-// send a positive message to iframe1 
-function goodReaction(){
-  frame2 = document.getElementById("ifrm1").contentWindow;
-  frame2.postMessage(JSON.stringify({"command": "message", "data": "good"}), '*');
-  update_feed("You sent positive vibes!");
-}
-
-// send a negative message to iframe1
-function badReaction() {
-  frame  = document.getElementById("ifrm1").contentWindow;
-  frame.postMessage(JSON.stringify({"command": "message", "data": "bad"}), '*');
-  update_feed("You sent negative vibes!");
-}
 
