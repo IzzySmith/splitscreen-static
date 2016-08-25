@@ -1,0 +1,16 @@
+body {
+  background-image: url('./ride.jpg');
+}
+      
+#exitButton {
+  background-color: white;
+}
+    
+.mainText {
+  color: white;
+}
+       
+a {
+  color: white;
+}
+ 

@@ -1,20 +1,25 @@
 #bu{
   background-color: #ea2020;
   border-color: black;
-  font-size: 20px;
+  border-width: medium;
+  font-size: 22px;
 }
 
 #homeHeading{
   font-size: 44px;
+  color: white;
+}
+
+header {
+  background-image: url("./mountain-bike-gory-priroda.jpg");
 }
 
 hr{
   color: white;
   background-color: white;
-  height: 4px;
+  height: 5px;
 }
 
 p{
   font-weight: bold;
-  font-size: 32px;
 }

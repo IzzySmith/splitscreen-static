@@ -2,39 +2,21 @@
 <html lang="en">
 
 <head>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     
-    <title>Popup link</title>
+    	<title>Share link</title>
 
-    <!-- Bootstrap Core CSS -->
+    <!-- Bootstrap Core CSS 
     <link href="../static/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+
     <link href="../static/stylish-portfolio.css" rel="stylesheet">
 
-    <!-- Custom Fonts -->
-    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <style>
-      body {
-         background-image: url('../static/ride.jpg');
-      }
-      
-      #exitButton {
-         background-color: white;
-      }
-    
-      .mainText {
-         color: white;
-      }       
-        
-      a {
-        color: white;
-      }
- 
-    </style>
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">-->
+
+    	<link href="../static/share.css" rel="stylesheet">
 
 </head>
 
@@ -42,11 +24,10 @@
 
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <h2 class="mainText">Share link!</h2>
+            <h2 class="mainText">Share link with a friend!</h2>
             <div id="invite" style="color:white" onclick="selectText('invite')">Invite link</div>
             <h2 class="mainText">Send link in Email</h2>
             <!-- form to enter the email address of a friend -->
-            <!-- method="post" onsubmit="sendLink()" -->
             <form>
               <label>
                  <input id="enterEmail" type="text" name="enterEmail" placeholder="enter email"/>
@@ -59,11 +40,6 @@
         </div>
     </header>
     
-<!--
-     get the email adress from the input element 
-     send the link in the mail
-     put restrictions on the email address
--->
 
     <script type="text/javascript">
     function selectText(containerid) {
