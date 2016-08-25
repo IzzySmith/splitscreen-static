@@ -14,4 +14,9 @@
   border-bottom: red 3px solid;
 }
 
+#menu {
+  visibility: visible;/*should be hidden, testing*/
+}
+
+
 

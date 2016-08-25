@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         // get the follower link
 			var retrievedLink = session.followerLink;
 			var frame = document.getElementById('ifrm2').contentWindow;
-			// send link to first frame
+			// send link to frame
 			frame.postMessage(JSON.stringify({"command": "message", "data": retrievedLink}), '*');
 			// make menu elements visible
 			document.getElementById('menu').style.visibility = "visible";
@@ -188,7 +188,7 @@ function badReaction() {
 </head>
 
 <body>
-<div id="menu" style="visibility: hidden">
+<div id="menu">
 	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
 	<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
 	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
@@ -214,7 +214,7 @@ function badReaction() {
 <!-- the frame in which the follower link will be opened -->
 <div class="box"><iframe id="ifrm2" src="" height="700" width="49%" align='right'></iframe></div>
 <!-- the reaction is seen in this iframe -->
-<div class="box"><iframe align='left' id="reaction" src="" height="300" width="300" style="display: block; position: absolute; frameBorder:'0'; visibility:hidden; border:0 none;"></iframe></div>
+<div class="box"><iframe align='left' id="reaction" src="" height="300" width="300"></iframe></div>
 
 <script>
 // get the current url and the follower link
