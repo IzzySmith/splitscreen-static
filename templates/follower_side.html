@@ -38,9 +38,10 @@ window.addEventListener('DOMContentLoaded', function() {
 			var frame = document.getElementById('ifrm2').contentWindow;
 			// send link to frame
 			frame.postMessage(JSON.stringify({"command": "message", "data": retrievedLink}), '*');
+			// make the nav bar visible
+			document.getElementById('form_wrapper').style.visibility = "visible";
 			// make menu elements visible
 			document.getElementById('menu').style.visibility = "visible";
-			console.log('ok');
 			// store session
 			sess = session;
 	     	})
@@ -58,138 +59,12 @@ window.addEventListener('DOMContentLoaded', function() {
     }
    });
  });
-
-/*
-// navigate to a new url
-function navigate(){
-	var url = document.getElementById('url').value;
-	// if the input is empty, use the placeholder instead
-	if(url=="" && document.getElementById('url').placeholder){
-		url = document.getElementById('url').placeholder;
-	}
-	// add 'https' to the link if it's not already there
-	if(url.indexOf('https')==-1){
-		url = 'https://' + url;
-	}
-	sess.relocate(url);
-}
-
-window.addEventListener('message', function(e){
-	if (e.origin == "https://surfly.com") {
-		var string = JSON.stringify(e.data);
-		if(string.indexOf('cobro_event') && string.indexOf("The leader relocated")!==-1){
-			var index = string.indexOf('data');
-			var indexEnd = string.indexOf('origin');	
-			var info = string.substring(index+9, indexEnd-5);
-			if(info.charAt(0)==='T'){
-				var new_ph = info.substring(info.indexOf('https')+8);
-				document.getElementById('url').placeholder = new_ph;
-			}	
-		}
-
-		if(string.indexOf('cobro_event') && (string.indexOf("Your friend is ignoring you!")!==-1||string.indexOf("Your friend stopped ignoring you!")!==-1)){
-			var index = string.indexOf('data');
-			var indexEnd = string.indexOf('origin');	
-			var info = string.substring(index+9, indexEnd-5);
-                        if(info.indexOf('!')!==-1){
-                        	update_feed(info);
-			}
-		}
-
-		if(string.indexOf('cobro_event') && (string.indexOf("Current url")!==-1)){
-			var index = string.indexOf('data');
-			var indexEnd = string.indexOf('origin');	
-			var info = string.substring(index+9, indexEnd-5);
-			if(info.charAt(0)==='C'){
-				var url = info.substring(info.indexOf('https'));
-				console.log('lasturl: '+info);
-                       	 	sess.relocate(url);
-			}
-		}
-
-		var reactionFrame = document.getElementById('reaction');
-	        // if the data recieved is "good" set the source of reactionFrame to the happy image
-	        if (string.match(/(good)/)) {
-		        reactionFrame.src = "../static/happycow.jpg";
-			update_feed("You received a like!");
-                        reactionFrame.style.visibility="visible";
-		        // the frame is hidden after 3 seconds 
-		        setTimeout(function() {
-		         reactionFrame.style.visibility = "hidden";
-		        }, 3000);
-		}
-	       // if the data recieved is "bad" the src of reactionFrame is the grumpy image
-               if (string.match(/(bad)/)) {
-		        reactionFrame.src = "../static/grumpy.jpg";
-			update_feed("You received a dislike!");
-                        reactionFrame.style.visibility="visible";
-		        // the frame is hidden after 3 seconds 
-		          setTimeout(function() {
-		           reactionFrame.style.visibility = "hidden";
-		          }, 3000);
-		}
-	}
-})
-
-function exitSession(){
-  sess.end('https://agile-badlands-71200.herokuapp.com');
-}
-
-// ignore friend button
-function ignoreFriend() {
-    var friendsFrame = document.getElementById("ifrm1");
-    var yourFrame = document.getElementById("ifrm2");
-    var ignoreButton = document.getElementById("ignore");
-
-    if(ignoreButton.innerHTML=="Ignore Friend"){
-	// we hide our friend's iframe
-	friendsFrame.style.visibility = "hidden";
-	// we make our iframe the size of the screen
-	yourFrame.style.width = "99%";
-	// change button to acknowledge friend
-    	ignoreButton.innerHTML = "Acknowledge Friend";
-
-	// update feed
-	friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend is ignoring you!"}), '*');
-    } else {
-	// we show our friend's iframe
-	friendsFrame.style.visibility = "visible";
-    	// we shrink our frame
-    	yourFrame.style.width = "49%";
-    	// we change the button to ignore friend 
-    	ignoreButton.innerHTML = "Ignore Friend";
-
-	// update feed
-	friendsFrame.contentWindow.postMessage(JSON.stringify({"command": "message", "data": "Your friend stopped ignoring you!"}), '*');
-    }
-}
-
-//update live feed
-function update_feed(text){
-	var news = document.getElementById("news_feed");
-	news.innerHTML = text;
-}
-
-function goodReaction(){
-  // sends a positive message to iframe 1
-  frame2 = document.getElementById("ifrm1").contentWindow;
-  frame2.postMessage(JSON.stringify({"command": "message", "data": "good"}), '*');
-  update_feed("You sent positive vibes!");
-}
-
-function badReaction() {
-  // sends a negative message to iframe 1 
-  frame = document.getElementById("ifrm1").contentWindow;
-  frame.postMessage(JSON.stringify({"command": "message", "data": "bad"}), '*');
-  update_feed("You sent negative vibes!");
-}
-*/
 </script>
 
 </head>
 
 <body>
-<div id="menu" style="visibility: visible;">
+<div id="menu">
 	<button class="button" id="exit_button" onclick="exitSession()">Exit</button>
 	<button id="ignore" onclick="ignoreFriend()">Ignore Friend</button>
 	<button id="goodReaction" class="reaction" onclick="goodReaction()"></button>
