@@ -2,54 +2,63 @@
 <html lang="en">
 
 <head>
-    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
-    	<title>Share link</title>
 
-    	<!-- Bootstrap Core CSS -->
-    	<link href="../static/bootstrap.min.css" rel="stylesheet">
-	<link href="../static/stylish-portfolio.css" rel="stylesheet">
-	
-    	<link href="../static/share.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <title>Popup link</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/stylish-portfolio.css" rel="stylesheet">
+    <link href="../static/popup_link.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- external js -->
+    <script type="text/javascript" src="../static/share.js" ></script>    
+
+
 </head>
 
 <body>
 
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <h2 class="mainText">Share link with a friend!</h2>
-            <div id="invite" style="color:white" onclick="selectText('invite')">Invite link</div>
-            <h2 class="mainText">Send link in Email</h2>
             <!-- form to enter the email address of a friend -->
-            <form>
-              <label>
-                 <input id="enterEmail" type="text" name="enterEmail" placeholder="enter email"/>
+            <form action="/popup_link" method="POST">
+             <p>
+             <label>
+                 <h2 class="mainText">Share link!</h2>
+                 <input id="inviteLink" type="text" name="inviteLink" placeholder="invite link"/>
+             </label>
+             </p>
+             <p>
+             <label>
+                  <input id="copyLink" class="button" type="button" value="copy link"/>
+             </p>
+             </label>
+             </p>
+             <p>
+	     <label>
+                 <h2 class="mainText">Send link in Email</h2>
+                 <input id="enterEmail" type="email" name="emailAddress" placeholder="enter email address"/>
               </label>
+              </p>
+              <p>
               <label>
-                 <input type="button" id="sendEmail" value="send email!" onclick="sendLink()"/>
+                 <input type="submit" class="button" id="sendEmail" value="send email!"/>
               </label>
+              </p>
             </form>
             <br>
         </div>
     </header>
-    
 
-    <script type="text/javascript">
-    function selectText(containerid) {
-        // function to select the link text on click 
-        if (document.selection) {
-            var range = document.body.createTextRange();
-            range.moveToElementText(document.getElementById(containerid));
-            range.select();
-        } else if (window.getSelection) {
-            var range = document.createRange();
-            range.selectNode(document.getElementById(containerid));
-            window.getSelection().addRange(range);
-        }
-    }
-   </script>
-
-   <script>
+    <script>
         var link;
 	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 	var eventer = window[eventMethod];
@@ -57,20 +66,14 @@
 	// Listen to message from child IFrame window
 	eventer(messageEvent, function (e) {
 	   var string = JSON.stringify(e.data);
+           // check to see if the string contains the session id 
            if (string.match(/[0-9]{3}[-][0-9]{3}[-][0-9]{3}/g)) {
               link = string.substring(1, string.length - 1);
-              document.getElementById("invite").innerHTML = link;
+              document.getElementById("inviteLink").value = link;
            }
 	}, false);
 
-        function sendLink() {
-          // get the email address from the form
-          var emailAddress = document.getElementById('enterEmail').value;
-          console.log("the input value was ", emailAddress, "and the link is ", link);
-          var emailTetx = document.createTextNode("You have been invited to start a splitscreen session!, please use the ", link , "to join your friend");
-        }
    </script>
- 
 
 </body>
 </html>
