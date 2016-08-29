@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         var pageDomain = document.location.origin;
 			// append the page domain to the session id
                         inviteLink = pageDomain.concat(sessionID);
-                        // send the message to iframe 2
+                        // send the link as a post message to iframe 2
                         var popupWindow = document.getElementById("ifrm2").contentWindow;
 		        popupWindow.postMessage(inviteLink, "*");
                         // change the url of the window to display the follower link 
@@ -81,9 +81,6 @@ window.addEventListener('DOMContentLoaded', function() {
      }
    });
  });
-</script>
-
-<script>
 </script>
 
 </head>
