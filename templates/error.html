@@ -26,9 +26,17 @@
                 <p> {{ error }} </p>
                 {% endif %}
 		<hr>
+                <button id="bu" onclick="Retry()" class="btn btn-primary btn-xl page-scroll">Retry</button>
             </div>
         </div>
     </header>
+
+    <script>
+
+	function Retry() {
+	    window.location.href = '/share'
+	}
+    </script>
 
 </body>
 
