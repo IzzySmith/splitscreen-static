@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    	<title>Welcome</title>
+
+    	<link href="../static/creative.css" rel="stylesheet">
+
+    	<!-- Bootstrap Core CSS -->
+    	<link href="../static/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom CSS -->
+	<link href="../static/share.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <hr>
+                {% if error %}
+                <p>Error: The email was not sent</p>
+                <p> {{ error }} </p>
+                {% endif %}
+		<hr>
+            </div>
+        </div>
+    </header>
+
+</body>
+
+</html>
