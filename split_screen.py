@@ -1,12 +1,12 @@
+from __future__ import print_function 
 import re
 import json
+import sys
 from flask import Flask, request, make_response, render_template
 from werkzeug.routing import Rule, Map, BaseConverter, ValidationError
-from flask_mandrill import Mandrill
+import mandrill
 
 app = Flask(__name__)
-app.config['MANDRILL_API_KEY'] = 'your_api_key'
-mandrill = Mandrill(app)
 
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
@@ -32,20 +32,22 @@ def index_session_id(session_id):
 @app.route('/share', methods = ['POST', 'GET'])
 def share():
    if request.method == 'POST':
-      email_address = request.form[ 'emailAddress' ]
-      email_link = request.form[ 'inviteLink' ]
-      mandrill.send_email(
-         from_email='splitscreen@surfly.com',
-         to=[{'email': email_address}],
-         html='<h4>You have been invited to a splitscreen session!</h4><p><a href='+email_link+'>Join the session</a></p><p><img src="cid:logo"/></p>',
-         subject='Invitation to a splitscreen session',
-         images = [{'content': surfly_encoded_logo,
+      try:
+         email_address = request.form[ 'emailAddress' ]
+         email_link = request.form[ 'inviteLink' ]
+         mandrill_client = mandrill.Mandrill('your_key_here')
+         message = {
+            'from_email': 'splitscreen@surfly.com',
+            'to': [{'email': email_address}],
+            'html':'<h4>You have been invited to a splitscreen session!</h4><p><a   href='+email_link+'>Join the session</a></p><p><img src="cid:logo"/></p>',
+            'subject':'Invitation to a splitscreen session',
+            'images': [{'content': surfly_encoded_logo,
                     'name': 'logo',
-                    'type': 'image/png'}],
-         )
-      return render_template('fourth_frame.html')
+                    'type': 'image/png'}]}
+         result = mandrill_client.messages.send(message=message, async=False) 
+         return render_template('fourth_frame.html')
+      except mandrill.Error, e:
+         print('A mandrill error occurred: %s - %s' % (e.__class__, e), file=sys.stderr)
+         raise
    else:
       return render_template('share.html')
-
-
-
