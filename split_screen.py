@@ -47,7 +47,7 @@ def share():
          result = mandrill_client.messages.send(message=message, async=False) 
          return render_template('fourth_frame.html')
       except mandrill.Error, e:
-         print('A mandrill error occurred: %s - %s' % (e.__class__, e), file=sys.stderr)
+         return render_template('error.html', error=e)
          raise
    else:
       return render_template('share.html')
