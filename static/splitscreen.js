@@ -64,6 +64,13 @@ function ignoreFriend() {
     	}
 }
 
+// return button (left arrow)
+function back_button(){
+  var index = 1;
+  if(urls.indexOf(lastUrl)>2){index=urls.indexOf(lastUrl);}
+  sess.relocate(urls[index-1]);  
+}
+
 // event listener
 window.addEventListener('message', function(e){
      var origin = event.origin || event.originalEvent.origin;
@@ -87,8 +94,12 @@ window.addEventListener('message', function(e){
 			var indexEnd = string.indexOf('origin');	
 			var info = string.substring(index+9, indexEnd-5);
 			if(info.charAt(0)==='T'){
-				var new_ph = info.substring(info.indexOf('https')+8);
-				document.getElementById('url').placeholder = new_ph;
+				if (info.indexOf('https') !== -1) {
+                       			var new_ph = info.substring(info.indexOf('https') + 8);
+                    		} else {
+                        		var new_ph = info.substring(info.indexOf('http') + 7);
+                   		}
+                    		document.getElementById('url').placeholder = new_ph;
 			}
 		}
 
