@@ -27,9 +27,10 @@ l.src='https://surfly.com/surfly.js';y.parentNode.insertBefore(l,y);})
 <script>
 var sess;
 var inviteLink;
+var urls=["https://www.duckduckgo.com"];
 var lastUrl;
 
-var settings = {widgetkey:'b84defc4621441ecae5eb10bdec1cb5a', block_until_agent_joins: false, ui_off: true, set_to_smallest: false};
+var settings = {widgetkey:'b84defc4621441ecae5eb10bdec1cb5a', block_until_agent_joins: false, ui_off: true, set_to_smallest: false, drawing_color: "red"};
 window.addEventListener('DOMContentLoaded', function() {
   Surfly.init(settings, function(init) {
     if (init.success) {
@@ -56,6 +57,8 @@ window.addEventListener('DOMContentLoaded', function() {
 			sess = session;	
 		})
 		.on('relocated', function(session, event) {
+    			// push new url to url history
+			urls.push(event.url);
 			// send message to the other side
 			var frame = document.getElementById('ifrm2').contentWindow;
 			frame.postMessage(JSON.stringify({"command": "message", "data": "The leader relocated to: " + event.url}), '*');
@@ -98,6 +101,7 @@ window.addEventListener('DOMContentLoaded', function() {
 		</div>
 	</div>
 	<div id="form_wrapper">
+		<button id="back" onclick="back_button()"></button>
 		<form id="nav" action="" method="post">
 			<label style="float:left">
 				<input id="url" type="text" name="url" placeholder="duckduckgo.com"/>
@@ -114,10 +118,11 @@ window.addEventListener('DOMContentLoaded', function() {
 <div class="box"><iframe id="ifrm1" src="" height="700" width="49%" align='left'></iframe></div>
 <!-- the frame in which the follower link will be opened -->
 <div class="box"><iframe id="ifrm2" src="./share" height="700" width="49%" align='right'></iframe></div>
-<!-- the reaction is seen in this iframe -->
-<div class="box"><iframe align='left' id="reaction" src="" height="300" width="200"></iframe></div>
 
-<!-- define form behaviour -->
+<!-- the reaction image -->
+<div class="box"><img align='left' id="reaction" src="" height="300" width="300"></img></div>
+
+<!-- script form behaviour -->
 <script type="text/javascript" src="../static/form.js" ></script>
 
 </body>
