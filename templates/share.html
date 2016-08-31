@@ -18,7 +18,7 @@
     <link href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-   <script type="text/javascript" src="../static/share.js" ></script> 
+   <!-- <script type="text/javascript" src="../static/share.js" ></script> -->
 
 </head>
 
@@ -27,7 +27,7 @@
     <header id="top" class="header">
         <div class="text-vertical-center">
             <!-- form to enter the email address of a friend -->
-            <form action="/share" method="POST">
+            <form>
              <p>
              <label>
                  <h2 class="mainText">Share link!</h2>
@@ -43,18 +43,30 @@
              <p>
 	     <label>
                  <h2 class="mainText">Send link in Email</h2>
-                 <input id="enterEmail" type="email" name="emailAddress" placeholder="enter email address"/>
+                 <input id="enterEmail" type="email" name="emailAddress" placeholder="enter email address"/>                
               </label>
               </p>
               <p>
               <label>
-                 <input type="submit" class="button" id="sendEmail" value="send email!"/>
+                 <a id="mail" href="">Invite</a>
               </label>
               </p>
             </form>
             <br>
         </div>
     </header>
+
+    <script>
+         mail.addEventListener('click', function() {
+            // get text input from the input
+            var address = document.getElementById('enterEmail').value;
+            console.log("the address is ", address);
+            var inviteLink = document.getElementById('inviteLink').value;
+            var mailLink = document.getElementById('mail');
+            mailLink.href = "mailto:"+address+"?subject=Invitation%20to%20splitscreen%20session%20request&body=You%20have%20been%20invited%20to%20a%20splitscreen%20session!%20click"+inviteLink+"%20to%20join%20";
+            window.location.href = '/fourth_frame.html';
+         });
+    </script>
 
 </body>
 </html>
